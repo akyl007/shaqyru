@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h1>Создать приглашение</h1>
+  <input type="text" id="name" placeholder="Имя" /><br />
+  <textarea id="text" placeholder="Текст приглашения"></textarea><br />
+  <input type="file" id="photo" /><br />
+  <button id="submit">Сохранить</button>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+    const supabase = createClient('https://your-project.supabase.co', 'public-anon-key');
+
+    document.getElementById('submit').onclick = async () => {
+      const name = document.getElementById('name').value;
+      const text = document.getElementById('text').value;
+      const file = document.getElementById('photo').files[0];
+
+      const filePath = `${Date.now()}_${file.name}`;
+      const { data: uploadData, error: uploadError } = await supabase.storage.from('photos').upload(filePath, file);
+
+      if (uploadError) return alert('Ошибка при загрузке фото');
+
+      const photo_url = supabase.storage.from('photos').getPublicUrl(filePath).data.publicUrl;
+
+      const { data, error } = await supabase.from('invitations').insert([{ name, text, photo_url }]);
+      if (error) return alert('Ошибка записи: ' + error.message);
+
+      alert('Ссылка: invite.html?id=' + data[0].id);
+    };
+  </script>
+</body>
+</html>

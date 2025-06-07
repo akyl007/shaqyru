@@ -1,0 +1,33 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Приглашение</title>
+</head>
+<body>
+  <h1 id="name">Имя</h1>
+  <img id="photo" style="max-width: 300px;" />
+  <p id="text">Текст приглашения</p>
+
+  <script type="module">
+    import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm'
+
+    const supabase = createClient('https://your-project.supabase.co', 'public-anon-key');
+
+    const id = window.location.pathname.replace('/', '').trim();
+    if (!id) {
+      document.body.innerHTML = '<p>Добро пожаловать на сайт приглашений!</p>';
+    } else {
+      const { data, error } = await supabase.from('invitations').select('*').eq('id', id).single();
+      if (data) {
+        document.getElementById('name').innerText = data.name;
+        document.getElementById('photo').src = data.photo_url;
+        document.getElementById('text').innerText = data.text;
+      } else {
+        document.body.innerHTML = '<p>Приглашение не найдено</p>';
+      }
+    }
+  </script>
+</body>
+</html>
