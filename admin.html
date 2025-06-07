@@ -53,11 +53,18 @@
         .from('invitations')
         .insert([{ name, text, photo_url }], { returning: 'representation' });
 
-      if (error || !data || !data[0]) {
-        console.error("Ошибка записи в таблицу:", error);
-        alert("Ошибка при добавлении приглашения: " + error.message);
-        return;
-      }
+      if (!data || !data[0]) {
+  console.error("Ошибка записи в таблицу. Ответ Supabase:", { data, error });
+
+  let message = "Неизвестная ошибка";
+  if (error && error.message) {
+    message = error.message;
+  }
+
+  alert("Ошибка при добавлении приглашения: " + message);
+  return;
+}
+
 
       const id = data[0].id;
       alert("Ссылка на приглашение: " + window.location.origin + '/' + id);
