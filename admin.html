@@ -15,7 +15,7 @@
   <script type="module">
     import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-    const supabase = createClient('https://ptiwofdiapkmzpjhicaa.supabase.co', 'public-anon-key');
+    const supabase = createClient('https://ptiwofdiapkmzpjhicaa.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB0aXdvZmRpYXBrbXpwamhpY2FhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkzMDc5MDgsImV4cCI6MjA2NDg4MzkwOH0.DVHV-k5a7e3G6nX9MBMnLn3r7zaNTLpR7ujvb9vVuEU');
 
     document.getElementById('submit').onclick = async () => {
       const name = document.getElementById('name').value;
